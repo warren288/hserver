@@ -12,9 +12,7 @@ public class SimpUtil {
             sb.append(str.getString());
             sb.append(combiner);
         }
-        sb.substring(0, sb.length()-1);
-
-        return sb.toString();
+        return sb.substring(0, sb.length()-combiner.length());
     }
 
     public static  String combineStrList(List<String> listStr, String combiner){
@@ -23,8 +21,6 @@ public class SimpUtil {
             sb.append(str);
             sb.append(combiner);
         }
-        sb.substring(0, sb.length()-1);
-
-        return sb.toString();
+        return sb.substring(0, sb.length()-combiner.length());
     }
 }

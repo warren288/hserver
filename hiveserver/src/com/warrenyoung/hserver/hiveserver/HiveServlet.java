@@ -16,11 +16,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/***
+ * 轻量级的Hive服务
+ */
 @WebServlet(name = "HiveServlet")
 public class HiveServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
+
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String strName = request.getParameter("name");
@@ -51,10 +55,13 @@ public class HiveServlet extends HttpServlet {
             e.printStackTrace();
             return;
         }
+
         String[] lstSql = strSql.split(";");
-        List<String> lstStr = new ArrayList<>();
+        List<String> lstResult = new ArrayList<>();
         for (String sql : lstSql) {
             System.out.print(sql);
+            ArrayList<String> lstStr = new ArrayList<>();
+
             try {
                 if (sql.trim().toLowerCase().startsWith("select")) {
                     ResultSet rs = state.executeQuery(sql);
@@ -75,8 +82,11 @@ public class HiveServlet extends HttpServlet {
                 e.printStackTrace();
                 lstStr.add(String.format("SQL=%s 运行%s", sql, "失败" ));
             }
+            lstResult.add(SimpUtil.combineStrList(lstStr, "\n"));
         }
-        pw.write(SimpUtil.combineStrList(lstStr, "\n"));
+
+        // 不同SQL的反馈结果之间，以不可见字符 \0001 间隔
+        pw.write(SimpUtil.combineStrList(lstResult, "\0001"));
         pw.close();
     }
 }

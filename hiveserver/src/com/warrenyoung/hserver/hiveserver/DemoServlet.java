@@ -17,7 +17,6 @@ public class DemoServlet extends javax.servlet.http.HttpServlet {
         response.setContentType("text/html");
         PrintWriter pw = response.getWriter();
         List<User> listUser =  DBUtil.getUserList();
-
         pw.write(SimpUtil.combine(listUser, "</p>"));
     }
 }
